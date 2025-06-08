@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"go-server/internal/config"
+	"github.com/rs/cors"
 	"net/http"
 )
 
@@ -21,10 +22,18 @@ func ApiServerHandler(config *config.Config) *ApiServer {
 	handler := NewHandler(db)
 	router := handler.NewRouter()
 
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"}, // Adjust for your React app
+		AllowedMethods:   []string{"GET", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type"},
+		AllowCredentials: true,
+	})
+	handlerWithCORS := c.Handler(router)
+
 	return &ApiServer{
 		httpServer: &http.Server{
 			Addr:    fmt.Sprintf(":%s", config.ServerPort),
-			Handler: router,
+			Handler: handlerWithCORS,
 		},
 	}
 }
