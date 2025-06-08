@@ -2,12 +2,14 @@ package server
 
 import (
 	"database/sql"
-	"encoding/json"
-	"net/http"
 	"time"
 
 	_ "github.com/lib/pq"
 )
+
+type DB interface {
+	FetchUsers() ([]User, error)
+}
 
 type Connection struct {
 	db *sql.DB
@@ -23,6 +25,8 @@ type User struct {
 	PasswordChangeDate time.Time `json:"password_change_date"`
 	LastLoginDate time.Time `json:"last_login"`
 	MfaEnabled   bool      `json:"mfa_enabled"`
+	DaysSincePasswordChange int `json:"days_since_password_change"`
+    DaysSinceLastLogin      int `json:"days_since_last_login"`
 }
 
 func NewPostgresConn(dataSourceName string) (*sql.DB, error) {
@@ -41,11 +45,10 @@ func NewHandler(conn *Connection) *Handler {
 	return &Handler{conn: conn}
 }
 
-func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) FetchUsers() ([]User, error) {
 	rows, err := h.conn.db.Query("SELECT * from users")
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -53,15 +56,10 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var user User
 		if err := rows.Scan(&user.User, &user.CreatedDate, &user.PasswordChangeDate, &user.LastLoginDate, &user.MfaEnabled); err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			return
+			return nil, err
 		}
 		users = append(users, user)
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(users); err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	return users, nil
 }

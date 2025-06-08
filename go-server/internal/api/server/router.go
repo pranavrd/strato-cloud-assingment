@@ -8,6 +8,7 @@ import (
 
 func (h *Handler) NewRouter() http.Handler {
 	r := mux.NewRouter()
-	r.HandleFunc("/api/users", h.GetUsers).Methods("GET")
+	r.HandleFunc("/api/users", h.GetActiveUsers).Methods("GET").Queries("active", "{active:yes|true}")
+	r.HandleFunc("/api/users", h.GetAllUsers).Methods("GET")
 	return r
 }
