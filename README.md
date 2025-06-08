@@ -104,9 +104,9 @@ docker-compose down -v
     ```sh
     netstat -nlp | grep :portno
     ```
-or :
+    or :
     ```sh
-        nmap -st -O localhost
+     nmap -st -O localhost
     ```
 
 ---
