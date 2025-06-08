@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: strato-db
+    environment:
+      POSTGRES_USER: pranavmin
+      POSTGRES_PASSWORD: psql123pass
+      POSTGRES_DB: stratoapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./go-server/schemas/init_table.sql:/docker-entrypoint-initdb.d/init_table.sql
+
+  go-server:
+    build:
+      context: ./go-server
+    container_name: strato-go-server
+    depends_on:
+      - db
+    environment:
+      SERVER_PORT: 8081
+      DATABASE_URL: postgres://pranavmin:psql123pass@db:5432/stratoapp?sslmode=disable
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+
+  react-app:
+    build:
+      context: ./react-app
+    container_name: strato-react-app
+    depends_on:
+      - go-server
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+
+volumes:
+  db_data:
