@@ -1,0 +1,35 @@
+package server
+
+import (
+	"fmt"
+	"log"
+	"go-server/internal/config"
+	"net/http"
+)
+
+type ApiServer struct {
+	httpServer *http.Server
+}
+
+func ApiServerHandler(config *config.Config) *ApiServer {
+	conn, err := NewPostgresConn(config.DatabaseURL)
+	if err != nil {
+		log.Fatalf("Could not connect to database: %v", err)
+	}
+
+	db := NewConnection(conn)
+	handler := NewHandler(db)
+	router := handler.NewRouter()
+
+	return &ApiServer{
+		httpServer: &http.Server{
+			Addr:    fmt.Sprintf(":%s", config.ServerPort),
+			Handler: router,
+		},
+	}
+}
+
+func (s *ApiServer) Start() error {
+	log.Printf("Server is running on %s ", s.httpServer.Addr)
+	return s.httpServer.ListenAndServe()
+}
