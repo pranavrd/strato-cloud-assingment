@@ -9,16 +9,16 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 INSERT INTO users (human_user, create_date, password_change_date, last_login, mfa_enabled)
-VALUES ('Foo Bar1', '2020-10-01 00:00:00', '2021-10-01 00:00:00', '2025-01-04 00:00:00', TRUE);
+VALUES ('Foo Bar1', '2020-10-01 00:00:00', '2021-10-01 00:00:00', '2025-05-04 00:00:00', TRUE);
 
 INSERT INTO users (human_user, create_date, password_change_date, last_login, mfa_enabled)
-VALUES ('Foo1 Bar1', '2019-09-20 00:00:00', '2019-09-22 00:00:00', '2025-02-08 00:00:00', FALSE);
+VALUES ('Foo1 Bar1', '2019-09-20 00:00:00', '2025-03-10 00:00:00', '2025-05-03 00:00:00', FALSE);
 
 INSERT INTO users (human_user, create_date, password_change_date, last_login, mfa_enabled)
 VALUES ('Foo2 Bar2', '2022-02-03 00:00:00', '2022-02-03 00:00:00', '2025-02-12 00:00:00', FALSE);
 
 INSERT INTO users (human_user, create_date, password_change_date, last_login, mfa_enabled)
-VALUES ('Foo3 Bar3', '2023-03-07 00:00:00', '2023-03-10 00:00:00', '2022-01-03 00:00:00', TRUE);
+VALUES ('Foo3 Bar3', '2023-03-07 00:00:00', '2024-03-22 00:00:00', '2025-04-08 00:00:00', TRUE);
 
 INSERT INTO users (human_user, create_date, password_change_date, last_login, mfa_enabled)
-VALUES ('Foo Bar4', '2018-04-08 00:00:00', '2020-04-12 00:00:00', '2022-10-04 00:00:00', FALSE);
+VALUES ('Foo Bar4', '2018-04-08 00:00:00', '2025-01-12 00:00:00', '2025-01-24 00:00:00', FALSE);

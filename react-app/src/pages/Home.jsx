@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import { Switch, FormControlLabel } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Users from '../components/Users';
 
 function Home() {
@@ -8,7 +12,7 @@ function Home() {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [showActive]);
 
   const fetchUsers = async () => {
     console.log('Fetching users, showActive:', showActive);
@@ -19,21 +23,25 @@ function Home() {
   };
 
   return (
-    <div className="container">
-      <h1>Users</h1>
-      <label>
-        <input
-          className='checkbox'
-          type="checkbox"
-          checked={showActive}
-          onChange={() => {
-            setShowActive(!showActive);
-            fetchUsers();
-          }}
-        />
-        MFA Active
-      </label>
-      <Users users={users} />
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Users Dashboard
+          </Typography>
+          <IconButton color="inherit" href="https://github.com/pranavrd/strato-cloud-assingment/" target="_blank">
+            <GitHubIcon />
+          </IconButton>
+          <IconButton color="inherit" href="https://linkedin.com/in/pranav-doshetty" target="_blank">
+            <LinkedInIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <FormControlLabel
+        control={<Switch checked={showActive} onChange={() => setShowActive(!showActive)} />}
+        label="MFA Enabled"
+      />
+      <Users users={users}/>
     </div>
   );
 }
