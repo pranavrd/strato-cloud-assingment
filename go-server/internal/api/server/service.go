@@ -11,7 +11,8 @@ func (h *Handler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := h.FetchUsers()
 	log.Printf("Getting all users")
 	if err != nil {
-		http.Error(w, "Failed to retrieve users", http.StatusInternalServerError)
+		http.Error(w, "Failed to retrieve users: "+err.Error(), http.StatusInternalServerError)
+		log.Fatalf("Error fetching users: %v", err)
 		return
 	}
 	users = addDaysSince(users)
@@ -22,7 +23,8 @@ func (h *Handler) GetActiveUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := h.FetchUsers()
 	log.Printf("Getting active users")
 	if err != nil {
-		http.Error(w, "Failed to retrieve users", http.StatusInternalServerError)
+		http.Error(w, "Failed to retrieve users: "+err.Error(), http.StatusInternalServerError)
+		log.Fatalf("Error fetching users: %v", err)
 		return
 	}
 	mfaUsers := make([]User, 0)

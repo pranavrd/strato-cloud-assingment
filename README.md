@@ -41,7 +41,7 @@ All services are containerized using Docker and orchestrated with Docker Compose
 ### 1. Clone the repository
 
 ```sh
-git clone <your-repo-url>
+git clone --depth=1 https://github.com/pranavrd/strato-cloud-assingment.git
 cd strato-cloud-assingment
 ```
 

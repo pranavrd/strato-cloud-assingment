@@ -11,6 +11,7 @@ function Home() {
   }, []);
 
   const fetchUsers = async () => {
+    console.log('Fetching users, showActive:', showActive);
     const url = showActive ? '/api/users?active=yes' : '/api/users';
     const response = await axios.get(`http://localhost:8081${url}`);
     setUsers(response.data);

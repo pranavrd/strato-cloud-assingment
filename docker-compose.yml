@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:16-alpine
@@ -22,7 +20,7 @@ services:
       - db
     environment:
       SERVER_PORT: ${SERVER_PORT}
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}?sslmode=disable
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     restart: unless-stopped
